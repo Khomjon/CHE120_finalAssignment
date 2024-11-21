@@ -5,16 +5,18 @@
 #Ilkhom Mukhtorov 21129116. IM
 #Alex Osborne 21128063. AO
 
+#AP imports randrange function to allow generation of random numbers
 from random import randrange
+#AP imports functions from turtle for graphical purchases
 from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
-
+#AP import square and vector functions. Vector is used for aiming and initializing locations. Square is used to generate images
 from freegames import square, vector
 
-#AP Initializes food location
+#AP Initializes food location in the center of the screen
 food = vector(0, 0)
-#AP Initializes snake location
+#AP Initializes snake location, just to side of food
 snake = [vector(10, 0)]
-#AP Initializes direction in which snake is heading
+#AP Initializes direction in which snake is heading (negative y direction)
 aim = vector(0, -10)
 
 #AP Function changes direction in which snake is aiming
@@ -34,40 +36,61 @@ def inside(head):
 #AP Function controls movement of snake
 def move():
     """Move snake forward one segment."""
-    head = snake[-1].copy()
-    head.move(aim)
+    head = snake[-1].copy() #AP Set the end of the snake as the location of the Head
+    head.move(aim) #AP move the head in the direction the snake is aiming
 
+    #AP Check if head is at the boundaries or collides with the snake
     if not inside(head) or head in snake:
+        #AP generate a red square at the point of impact
         square(head.x, head.y, 9, 'red')
+        #AP Update the graphics on screen
         update()
+        #AP Exits function (No more movement)
         return
 
+    #AP update the head position (End of the snake's body)
     snake.append(head)
 
+    #AP Check if the user has "eaten" The food
     if head == food:
+        #AP print statement showing length of snake
         print('Snake:', len(snake))
+        #AP generate new X position of food
         food.x = randrange(-15, 15) * 10
+        #AP generate new Y position food
         food.y = randrange(-15, 15) * 10
     else:
+        #AP Remove end ("butt") of snake to account for the addition of the square at the "head"
         snake.pop(0)
 
+    #AP clear screen for the next frame
     clear()
 
+    #AP draws each square segment of the snakes body
     for body in snake:
         square(body.x, body.y, 9, 'black')
 
+    #AP Draws the food
     square(food.x, food.y, 9, 'green')
+
+    #AP updates the graphics with the squares drawn in the last three lines
     update()
+    #AP calls the move timer every 100 milliseconds
     ontimer(move, 100)
 
-
+#AP Set size and position of new window
 setup(420, 420, 370, 0)
+#AP hides "turtle" cursor and its tracer
 hideturtle()
 tracer(False)
+#AP listen() allows tracking of events within the turtle screen
 listen()
+#AP Sets the functions to be called on press of each arrow key
 onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
+#AP begins the movement of the snake (Starts the game)
 move()
+#AP Stop Excecution of Turtle graphics
 done()
