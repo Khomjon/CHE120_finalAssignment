@@ -14,16 +14,16 @@ Exercises
 
 #AP imports randrange function to allow generation of random numbers
 from random import randrange
-#AP imports functions from turtle for graphical purchases
+#AP imports functions from turtle for graphical purposes
 from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
 #AP import square and vector functions. Vector is used for aiming and initializing locations. Square is used to generate images
 from freegames import square, vector
 
 #AP Initializes food location in the center of the screen
 food = vector(0, 0)
-#AP Initializes snake location, just to side of food
+#AP Initializes snake location, just to right side of food
 snake = [vector(10, 0)]
-#AP Initializes direction in which snake is heading (negative y direction)
+#AP Initializes direction in which snake is heading (downwards)
 aim = vector(0, -10)
 
 #AP Function changes direction in which snake is aiming
@@ -37,16 +37,18 @@ def change(x, y):
 #AP Function checks if head is within game board
 def inside(head):
     """Return True if head inside boundaries."""
-    #AP Check if head is within boundaries in x and y directions
+    #AP Check if head x and y is within the range of the respective boundaries
     return -200 < head.x < 190 and -200 < head.y < 190
 
 #AP Function controls movement of snake
 def move():
     """Move snake forward one segment."""
-    head = snake[-1].copy() #AP Set the end of the snake as the location of the Head
-    head.move(aim) #AP move the head in the direction the snake is aiming
+    #AP Set the end of the snake (last square within the snake array of squares) as the location of the Head
+    head = snake[-1].copy() 
+    #AP move the head in the direction the snake is aiming in order to start the movement of the snake
+    head.move(aim)
 
-    #AP Check if head is at the boundaries or collides with the snake
+    #AP Check if head is at the boundaries or is within the body of the snake by checking if the head is in the array of squares of the body
     if not inside(head) or head in snake:
         #AP generate a red square at the point of impact
         square(head.x, head.y, 9, 'red')
@@ -62,12 +64,13 @@ def move():
     if head == food:
         #AP print statement showing length of snake
         print('Snake:', len(snake))
-        #AP generate new X position of food
+        #AP generate new random X position of food
         food.x = randrange(-15, 15) * 10
-        #AP generate new Y position food
+        #AP generate new random Y position food
         food.y = randrange(-15, 15) * 10
     else:
         #AP Remove end ("butt") of snake to account for the addition of the square at the "head"
+        #AP Note the end is not removed if food is eaten, menaing the snake extends by one
         snake.pop(0)
 
     #AP clear screen for the next frame
@@ -77,7 +80,7 @@ def move():
     for body in snake:
         square(body.x, body.y, 9, 'black')
 
-    #AP Draws the food
+    #AP Draws a square for the food
     square(food.x, food.y, 9, 'green')
 
     #AP updates the graphics with the squares drawn in the last three lines
