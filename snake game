@@ -7,27 +7,38 @@ Exercises
 4. Change the snake to respond to mouse clicks.
 """
 
+#Alex Pacheco 21122927. AP
+#Gavin Savage 21146953. GS
+#Ilkhom Mukhtorov 21129116. IM
+#Alex Osborne 21128063. AO
+
 from random import randrange
 from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
 
 from freegames import square, vector
 
+#AP Initializes food location
 food = vector(0, 0)
+#AP Initializes snake location
 snake = [vector(10, 0)]
+#AP Initializes direction in which snake is heading
 aim = vector(0, -10)
 
-
+#AP Function changes direction in which snake is aiming
 def change(x, y):
     """Change snake direction."""
+    #AP Changes x value of aim to new x
     aim.x = x
+    #AP Changes y value of aim to new y
     aim.y = y
 
-
+#AP Function checks if head is within game board
 def inside(head):
     """Return True if head inside boundaries."""
+    #AP Check if head is within boundaries in x and y directions
     return -200 < head.x < 190 and -200 < head.y < 190
 
-
+#AP Function controls movement of snake
 def move():
     """Move snake forward one segment."""
     head = snake[-1].copy()
