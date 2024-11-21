@@ -1,12 +1,10 @@
-
-
 #Alex Pacheco 21122927. AP
 #Gavin Savage 21146953. GS
 #Ilkhom Mukhtorov 21129116. IM
 #Alex Osborne 21128063. AO
 
 from random import randrange
-from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
+from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title
 
 from freegames import square, vector
 
@@ -16,6 +14,23 @@ food = vector(0, 0)
 snake = [vector(10, 0)]
 #AP Initializes direction in which snake is heading
 aim = vector(0, -10)
+
+# Game state
+game_running = False
+
+#IM Function to display the start page
+def start_page():
+    clear()
+    bgcolor('lightblue')
+    title('Snake Game - Press Enter to Start')
+    update()
+
+#IM Function to display the end game page
+def end_page():
+    clear()
+    bgcolor('lightcoral')
+    title('Game Over - Press Enter to Restart')
+    update()
 
 #AP Function changes direction in which snake is aiming
 def change(x, y):
@@ -60,7 +75,29 @@ def move():
     update()
     ontimer(move, 100)
 
-
+#IM Function to start game
+def start_game():
+    global game_running
+    game_running = True
+    global snake
+    snake = [vector(10,0)] #IM this will reset the snake
+    global food
+    food = vector(0,0) #IM this will reset food
+    global aim
+    aim = vector(0,-10) #IM Reset the direction
+    move()
+    
+#IM Function to end the game
+def end_game():
+    global game_running
+    game_running = False
+    end_page()
+    
+#IM function to restart the game
+def restart_game():
+    start_game()
+    
+#IM setup the game window
 setup(420, 420, 370, 0)
 hideturtle()
 tracer(False)
@@ -69,5 +106,9 @@ onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
-move()
+onkey(lambda: start_game(), 'Return') #IM Press enter to start the game
+onkey(lambda: restart_game(), 'Return') #IM press enter to restart the game]
+
+start_page() #IM show start page
+
 done()
