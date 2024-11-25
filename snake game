@@ -1,5 +1,5 @@
 from random import randrange, choice  # Import choice for random power-up selection
-from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title, write, setposition
+from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title, write, setposition, up, down
 from freegames import square, vector
 
 food = vector(0, 0)
