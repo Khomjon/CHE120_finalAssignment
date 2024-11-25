@@ -1,3 +1,7 @@
+from random import randrange, choice  # Import choice for random power-up selection
+from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
+from freegames import square, vector
+
 """Snake, classic arcade game.
 
 Exercises
@@ -17,6 +21,24 @@ food = vector(0, 0)
 snake = [vector(10, 0)]
 aim = vector(0, -10)
 
+#GS Initialize a wall list to add walls to 
+wall = [vector(40,-60)]
+
+#GS initialize a power up position
+powerup = vector(0 , 0) 
+
+#GS initialize a variable to check if powerup is on or not
+powerup_on = False 
+
+#GS initialize a speed multiplier for the snake so it's easy to change with speed powerups
+speed_product= 1
+
+#AP initialize a variable to check type of powerup
+powerup_type = ''
+
+#GS initialize a variable to check if the shorten powerup was just used - so the game does not spawn another powerup at length 5
+just_shortened = False
+            
 
 def change(x, y):
     """Change snake direction."""
@@ -28,13 +50,52 @@ def inside(head):
     """Return True if head inside boundaries."""
     return -200 < head.x < 190 and -200 < head.y < 190
 
+def draw_powerup(powerup_type):
+    #GS apply a specific colour to each type of powerup
+    if powerup_type == 'speed_up' :
+        square(powerup.x, powerup.y, 9, 'purple')
+    elif powerup_type == 'speed_down' :
+        square(powerup.x, powerup.y, 9, 'blue')
+    elif powerup_type == 'shorten':
+        square(powerup.x, powerup.y, 9, 'yellow')
+    elif powerup_type == 'lengthen' :
+        square(powerup.x, powerup.y, 9, 'pink')
+        
+#AP function to check whether a provided object intersects with another
+def check_intersection(thing, category):
+    #AP conditionals decide which checks are necessary.
+    #AP E.G. food does not reference food location as they will always be the same
+    if category!='food':
+        if thing.x == food.x and thing.y == food.y:
+            #AP returns true if the obejcts intersect
+            return True
+    
+    for s in wall:
+        if thing.x == s.x and thing.y == s.y:
+            return True
+    
+    if category != 'snake':
+        for s in snake:
+            if thing.x == s.x and thing.y == s.y:
+                return True
+            
+     #AP returns false if no objects intersect   
+    return False
+
 
 def move():
+    #GS Define global variables that will be used inside the functions 
+    global speed_product 
+    global powerup_on
+    global powerup_type
+    global just_shortened
+    
     """Move snake forward one segment."""
     head = snake[-1].copy()
     head.move(aim)
 
-    if not inside(head) or head in snake:
+    #GS Add to check if the head hits the wall to end the game
+    if not inside(head) or head in snake or head in wall:
         square(head.x, head.y, 9, 'red')
         update()
         return
@@ -42,9 +103,70 @@ def move():
     snake.append(head)
 
     if head == food:
+        #GS check if the shortened powerup was used
+        just_shortened = False
+        #GS keep the speed multiplier at normal speed when another powerup appears
+        if len(snake)%5 == 0:
+            speed_product = 1
         print('Snake:', len(snake))
-        food.x = randrange(-15, 15) * 10
-        food.y = randrange(-15, 15) * 10
+        #AP turn powerup off
+        powerup_on = False
+        #GS make sure food is not in wall 
+        while(True):
+            cond = False
+            food.x = randrange(-15, 15) * 10
+            food.y = randrange(-15, 15) * 10
+            
+            cond = check_intersection(food, "food")
+                    
+            if not cond:
+                break
+                    
+        
+        #AP Create a random wall after food is eaten
+        new_wall = wall[-1].copy() 
+        while(True):
+            cond = False
+            new_wall.x = randrange(-20, 19) * 10
+            new_wall.y = randrange(-20, 19) * 10
+           
+            cond = check_intersection(new_wall, "wall")
+            
+            if not cond:
+                break
+
+        
+        wall.append(new_wall)
+    #GS Check if the snake eats the powerup
+    elif head == powerup and powerup_on == True:
+        speed_product = 1
+        #GS Check the type of powerup and applies the powerup
+        if powerup_type == 'speed_up' :
+            speed_product /= 2
+        elif powerup_type == 'speed_down':
+            speed_product += 1
+        elif powerup_type == 'shorten':
+            if len(snake)>5 :
+                for i in range(3):
+                    snake.pop(i)
+                just_shortened = True
+        elif powerup_type == 'lengthen' :
+            for i in range(3):
+                head = snake[-1].copy()
+                head.move(aim)
+                snake.append(head)
+        #GS Reset the powerup status 
+        powerup_on = False
+        #AP Move the food to a new place after powerup is eaten
+        while(True):
+            cond = False
+            food.x = randrange(-15, 15) * 10
+            food.y = randrange(-15, 15) * 10
+           
+            cond = check_intersection(food, "food")
+                
+            if not cond:
+                break
     else:
         snake.pop(0)
 
@@ -54,8 +176,38 @@ def move():
         square(body.x, body.y, 9, 'black')
 
     square(food.x, food.y, 9, 'green')
+    
+    #Apply a colour to walls
+    for i in wall: 
+    
+        square(i.x, i.y, 9, 'grey')
+    
+    #AP Check if you want powerup to appear and make sure it doesn't appear at the same length twice if shortened powerup was used 
+    if (len(snake))%5 == 0 and not just_shortened :
+        if not powerup_on:
+            #GS turn the powerup on
+            powerup_on = True
+            #GS Pick powerup type
+            powerup_type = choice(['speed_up', 'speed_down', 'shorten', 'lengthen'])
+            #GS pick new powerup location and make sure it is not inside a wall
+            while(True):
+                cond = False
+                powerup.x = randrange(-15, 15) * 10
+                powerup.y = randrange(-15, 15) * 10
+                
+                cond = check_intersection(powerup, "powerup")
+                
+                draw_powerup(powerup_type)
+                
+                if not cond:
+                    break
+            
+        else: 
+           draw_powerup(powerup_type)
+        
     update()
-    ontimer(move, 100)
+    #GS Change ontimer time value to be a function of speed multiplier
+    ontimer(move, int(100 *speed_product))
 
 
 setup(420, 420, 370, 0)
