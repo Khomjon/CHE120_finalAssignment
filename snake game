@@ -1,25 +1,13 @@
 from random import randrange, choice  # Import choice for random power-up selection
-from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
-from freegames import square, vector
-
-"""Snake, classic arcade game.
-
-Exercises
-
-1. How do you make the snake faster or slower?
-2. How can you make the snake go around the edges?
-3. How would you move the food?
-4. Change the snake to respond to mouse clicks.
-"""
-
-from random import randrange
-from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
-
+from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title, write, setposition
 from freegames import square, vector
 
 food = vector(0, 0)
 snake = [vector(10, 0)]
 aim = vector(0, -10)
+
+#IM Initializes the score value to 0
+score = 0
 
 #GS Initialize a wall list to add walls to 
 wall = [vector(40,-60)]
@@ -39,12 +27,44 @@ powerup_type = ''
 #GS initialize a variable to check if the shorten powerup was just used - so the game does not spawn another powerup at length 5
 just_shortened = False
             
+# Game state
+game_running = False
+
+#IM Function to display the start page
+def start_page():
+    clear()
+    write('SNAKE GAME', align='center', font=('Fantasy', 30, 'bold'))
+    up()
+    setposition(0,-25)
+    down()
+    write('Use arrow keys to control the snake',align='center', font=('Fantasy', 16, 'normal'))
+    up()
+    setposition(0,-50)
+    down()
+    write('Press Enter to Start', align='center', font=('Fantasy', 16, 'normal'))
+    update()
+
+#IM Function to display the end game page
+def end_page():
+    clear()
+    up()
+    setposition(0,0)
+    down()
+    write('GAME OVER', align='center', font=('Fantasy', 30, 'bold'))
+    up()
+    setposition(0,-25)
+    down()
+    write(f'Final Score: {score}', align='center', font=('Fantasy', 20, 'normal'))
+    up()
+    setposition(0,-50)
+    down()
+    write('Press Enter to Restart', align='center', font=('Fantasy', 16, 'normal'))
+    update()
 
 def change(x, y):
     """Change snake direction."""
     aim.x = x
     aim.y = y
-
 
 def inside(head):
     """Return True if head inside boundaries."""
@@ -82,27 +102,30 @@ def check_intersection(thing, category):
      #AP returns false if no objects intersect   
     return False
 
-
 def move():
     #GS Define global variables that will be used inside the functions 
     global speed_product 
     global powerup_on
     global powerup_type
     global just_shortened
-    
+    global score
+
     """Move snake forward one segment."""
     head = snake[-1].copy()
     head.move(aim)
 
-    #GS Add to check if the head hits the wall to end the game
+    #GS Add to check if the head hits the wall to end the game #IM display eng game page when head hits wall
     if not inside(head) or head in snake or head in wall:
         square(head.x, head.y, 9, 'red')
         update()
+        end_game()
         return
 
     snake.append(head)
 
     if head == food:
+        #IM score will update by 1 when head eats food
+        score += 1
         #GS check if the shortened powerup was used
         just_shortened = False
         #GS keep the speed multiplier at normal speed when another powerup appears
@@ -209,6 +232,30 @@ def move():
     #GS Change ontimer time value to be a function of speed multiplier
     ontimer(move, int(100 *speed_product))
 
+#IM Function to start game
+def start_game():
+    global game_running
+    game_running = True
+    global snake
+    snake = [vector(10,0)] #IM this will reset the snake
+    global food
+    food = vector(0,0) #IM this will reset food
+    global aim
+    aim = vector(0,-10) #IM Reset the direction
+    global score
+    score = 0 #IM reset the score when starting the game
+    move()
+    
+#IM Function to end the game
+def end_game():
+    global game_running
+    game_running = False
+    end_page()
+    
+#IM function to restart the game
+def restart_game():
+    if not game_running:
+        start_game()
 
 setup(420, 420, 370, 0)
 hideturtle()
@@ -218,5 +265,7 @@ onkey(lambda: change(10, 0), 'Right')
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
-move()
+onkey(lambda: start_game(), 'Return') #IM Press enter to start the game
+onkey(lambda: restart_game(), 'Return') #IM press enter to restart the game]
+start_page() #IM show start page
 done()
