@@ -1,5 +1,5 @@
 from random import randrange, choice  # Import choice for random power-up selection
-from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title, write, setposition, up, down
+from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title, write, up, down, setposition
 from freegames import square, vector
 
 food = vector(0, 0)
@@ -33,15 +33,15 @@ game_running = False
 #IM Function to display the start page
 def start_page():
     clear()
-    write('SNAKE GAME', align='center', font=('Fantasy', 30, 'bold'))
+    write('SNAKE GAME', align='center', font=('Futura', 30, 'bold'))
     up()
     setposition(0,-25)
     down()
-    write('Use arrow keys or WASD to control the snake',align='center', font=('Fantasy', 14, 'normal'))
+    write('Use arrow keys to control the snake',align='center', font=('Futura', 16, 'normal'))
     up()
     setposition(0,-50)
     down()
-    write('Press Enter to Start', align='center', font=('Fantasy', 14, 'normal'))
+    write('Press Enter to Start', align='center', font=('Futura', 16, 'normal'))
     update()
 
 #IM Function to display the end game page
@@ -50,15 +50,15 @@ def end_page():
     up()
     setposition(0,0)
     down()
-    write('GAME OVER', align='center', font=('Fantasy', 30, 'bold'))
+    write('GAME OVER', align='center', font=('Futura', 30, 'bold'))
     up()
     setposition(0,-25)
     down()
-    write(f'Final Score: {score}', align='center', font=('Fantasy', 20, 'normal'))
+    write(f'Final Score: {score}', align='center', font=('Futura', 20, 'normal'))
     up()
     setposition(0,-50)
     down()
-    write('Press Enter to Restart', align='center', font=('Fantasy', 16, 'normal'))
+    write('Press Enter to Restart', align='center', font=('Futura', 16, 'normal'))
     update()
 
 def change(x, y):
@@ -234,16 +234,16 @@ def move():
 
 #IM Function to start game
 def start_game():
-    global game_running
+    global game_running, snake, food, aim, score, wall, powerup_on, speed_product, just_shortened
     game_running = True
-    global snake
     snake = [vector(10,0)] #IM this will reset the snake
-    global food
     food = vector(0,0) #IM this will reset food
-    global aim
     aim = vector(0,-10) #IM Reset the direction
-    global score
     score = 0 #IM reset the score when starting the game
+    wall = [vector(40,-60)]  # IM Reset walls to initial state
+    powerup_on = False  # IM Reset powerup state
+    speed_product = 1  # IM Reset speed
+    just_shortened = False  # IM Reset shortened state
     move()
     
 #IM Function to end the game
