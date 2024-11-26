@@ -41,11 +41,11 @@ def start_page():
     up()
     setposition(0,-25)
     down()
-    write('Use Arrow keys or WASD to control the snake',align='center', font=('Futura', 16, 'normal'))
+    write('Use Arrow keys or WASD to control the snake',align='center', font=('Futura', 12, 'normal'))
     up()
     setposition(0,-50)
     down()
-    write('Press Enter to Start', align='center', font=('Futura', 16, 'normal'))
+    write('Press Enter to Start', align='center', font=('Futura', 12, 'normal'))
     update()
 
 #IM Function to display the end game page
