@@ -1,6 +1,9 @@
 from random import randrange, choice  # Import choice for random power-up selection
 from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done, textinput, bgcolor, title, write, up, down, setposition
 from freegames import square, vector
+#AO import keyboard module
+#Reference: https://stackoverflow.com/questions/24072790/how-to-detect-key-presses
+import keyboard
 
 food = vector(0, 0)
 snake = [vector(10, 0)]
@@ -231,6 +234,45 @@ def move():
     update()
     #GS Change ontimer time value to be a function of speed multiplier
     ontimer(move, int(100 *speed_product))
+    
+def controlSnake():
+    #AO User input for snake using arrows or 'wasd'
+    #AO snake will go right if 'd' or the right arrow is pressed
+    if keyboard.is_pressed("d") or keyboard.is_pressed("right arrow"):
+        #AO snake can go in all directions if length is 1
+        if len(snake) == 1:
+            change(10,0)
+        else:
+            #AO snake cannot go right if it is already going left
+            if aim != vector(-10,0):
+                change(10,0)
+            
+    #AO snake will go left if 'a' or the left arrow is pressed
+    if keyboard.is_pressed("a") or keyboard.is_pressed("left arrow"):
+        if len(snake) == 1:
+            change(-10,0)
+        else:
+            #AO snake cannot go left if it is already going right
+            if aim != vector(10,0):
+                change(-10,0)
+
+    #AO snake will go up if 'w' or the up arrow is pressed
+    if keyboard.is_pressed("w") or keyboard.is_pressed("up arrow"):
+        if len(snake) == 1:
+            change(0,10)
+        else:    
+            #AO snake cannot go up if it is already going down
+            if aim != vector(0,-10):
+                change(0,10)
+    
+    #AO snake will go down if 's' or the down arrow is pressed
+    if keyboard.is_pressed("s") or keyboard.is_pressed("down arrow"):
+        if len(snake) == 1:
+            change(0,-10)
+        else:    
+            #AO snake cannot go down if it is already going up
+            if aim != vector(0,10):
+                change(0,-10)
 
 #IM Function to start game
 def start_game():
@@ -261,10 +303,6 @@ setup(420, 420, 370, 0)
 hideturtle()
 tracer(False)
 listen()
-onkey(lambda: change(10, 0), 'Right')
-onkey(lambda: change(-10, 0), 'Left')
-onkey(lambda: change(0, 10), 'Up')
-onkey(lambda: change(0, -10), 'Down')
 onkey(lambda: start_game(), 'Return') #IM Press enter to start the game
 onkey(lambda: restart_game(), 'Return') #IM press enter to restart the game]
 start_page() #IM show start page
