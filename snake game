@@ -139,13 +139,11 @@ def move():
     snake.append(head)
 
     if head == food:
-<<<<<<< Updated upstream
-=======
+
         #AO play point sfx
         play(pointfx, async_mode = True)
         #IM score will update by 1 when head eats food
-        score += 1
->>>>>>> Stashed changes
+
         #GS check if the shortened powerup was used
         just_shortened = False
         #GS keep the speed multiplier at normal speed when another powerup appears
