@@ -41,7 +41,7 @@ def start_page():
     up()
     setposition(0,-25)
     down()
-    write('Use arrow keys to control the snake',align='center', font=('Futura', 16, 'normal'))
+    write('Use Arrow keys or WASD to control the snake',align='center', font=('Futura', 16, 'normal'))
     up()
     setposition(0,-50)
     down()
