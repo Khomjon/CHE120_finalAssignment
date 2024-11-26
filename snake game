@@ -121,7 +121,7 @@ def move():
     if not inside(head) or head in snake or head in wall:
         square(head.x, head.y, 9, 'red')
         update()
-        end_game()
+        ontimer(end_game,800)
         return
 
     snake.append(head)
