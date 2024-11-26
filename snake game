@@ -117,6 +117,7 @@ def move():
     """Move snake forward one segment."""
     head = snake[-1].copy()
     head.move(aim)
+    controlSnake()
 
     #GS Add to check if the head hits the wall to end the game #IM display eng game page when head hits wall
     if not inside(head) or head in snake or head in wall:
