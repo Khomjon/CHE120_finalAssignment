@@ -10,9 +10,6 @@ food = vector(0, 0)
 snake = [vector(10, 0)]
 aim = vector(0, -10)
 
-#IM Initializes the score value to 0
-score = 0
-
 #GS Initialize a wall list to add walls to 
 wall = [vector(40,-60)]
 
@@ -58,7 +55,7 @@ def end_page():
     up()
     setposition(0,-25)
     down()
-    write(f'Final Score: {score}', align='center', font=('Futura', 20, 'normal'))
+    write(f'Final Score: {len(snake)}', align='center', font=('Futura', 20, 'normal'))
     up()
     setposition(0,-50)
     down()
@@ -112,7 +109,6 @@ def move():
     global powerup_on
     global powerup_type
     global just_shortened
-    global score
 
     """Move snake forward one segment."""
     head = snake[-1].copy()
@@ -129,8 +125,6 @@ def move():
     snake.append(head)
 
     if head == food:
-        #IM score will update by 1 when head eats food
-        score += 1
         #GS check if the shortened powerup was used
         just_shortened = False
         #GS keep the speed multiplier at normal speed when another powerup appears
@@ -278,12 +272,11 @@ def controlSnake():
 
 #IM Function to start game
 def start_game():
-    global game_running, snake, food, aim, score, wall, powerup_on, speed_product, just_shortened
+    global game_running, snake, food, aim, wall, powerup_on, speed_product, just_shortened
     game_running = True
     snake = [vector(10,0)] #IM this will reset the snake
     food = vector(0,0) #IM this will reset food
     aim = vector(0,-10) #IM Reset the direction
-    score = 0 #IM reset the score when starting the game
     wall = [vector(40,-60)]  # IM Reset walls to initial state
     powerup_on = False  # IM Reset powerup state
     speed_product = 1  # IM Reset speed
