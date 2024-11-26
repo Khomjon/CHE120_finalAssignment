@@ -1,5 +1,3 @@
-
-
 #Alex Pacheco 21122927. AP
 #Gavin Savage 21146953. GS
 #Ilkhom Mukhtorov 21129116. IM
@@ -8,12 +6,9 @@
 #AP imports randrange function to allow generation of random numbers
 from random import randrange
 #AP imports functions from turtle for graphical purchases
-from turtle import update, clear, ontimer, setup, hideturtle, tracer, listen, done
+from turtle import update, onkey, clear, ontimer, setup, hideturtle, tracer, listen, done
 #AP import square and vector functions. Vector is used for aiming and initializing locations. Square is used to generate images
 from freegames import square, vector
-#AO import keyboard module
-#Reference: https://stackoverflow.com/questions/24072790/how-to-detect-key-presses
-import keyboard
 
 #AP Initializes food location in the center of the screen
 food = vector(0, 0)
@@ -36,42 +31,11 @@ def inside(head):
     #AP Check if head is within boundaries in x and y directions
     return -200 < head.x < 190 and -200 < head.y < 190
 
-def controlSnake():
-    #AO User input for snake using arrows or 'wasd'
-    if keyboard.is_pressed("d") or keyboard.is_pressed("right arrow"):
-        if len(snake) == 1:
-            change(10,0)
-        else:
-            if aim != vector(-10,0):
-                change(10,0)
-            
-    if keyboard.is_pressed("a") or keyboard.is_pressed("left arrow"):
-        if len(snake) == 1:
-            change(-10,0)
-        else:
-            if aim != vector(10,0):
-                change(-10,0)
-
-    if keyboard.is_pressed("w") or keyboard.is_pressed("up arrow"):
-        if len(snake) == 1:
-            change(0,10)
-        else:    
-            if aim != vector(0,-10):
-                change(0,10)
-    
-    if keyboard.is_pressed("s") or keyboard.is_pressed("down arrow"):
-        if len(snake) == 1:
-            change(0,-10)
-        else:    
-            if aim != vector(0,10):
-                change(0,-10)
-
 #AP Function controls movement of snake
 def move():
     """Move snake forward one segment."""
     head = snake[-1].copy() #AP Set the end of the snake as the location of the Head
     head.move(aim) #AP move the head in the direction the snake is aiming
-    controlSnake()
 
     #AP Check if head is at the boundaries or collides with the snake
     if not inside(head) or head in snake:
@@ -119,6 +83,11 @@ hideturtle()
 tracer(False)
 #AP listen() allows tracking of events within the turtle screen
 listen()
+#AP Sets the functions to be called on press of each arrow key
+onkey(lambda: change(10, 0), 'Right')
+onkey(lambda: change(-10, 0), 'Left')
+onkey(lambda: change(0, 10), 'Up')
+onkey(lambda: change(0, -10), 'Down')
 #AP begins the movement of the snake (Starts the game)
 move()
 #AP Stop Excecution of Turtle graphics
