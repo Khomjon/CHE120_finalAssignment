@@ -5,10 +5,19 @@ from freegames import square, vector
 #Reference: https://stackoverflow.com/questions/24072790/how-to-detect-key-presses
 #BEFORE RUNNING - type "pip install keyboard" into Anaconda Prompt
 import keyboard
+#AO import nava sound module
+#Reference: https://github.com/openscilab/nava/blob/main/nava/functions.py
+#BEFORE RUNNING - type "pip install nava" into Anaconda Prompt
+from nava import play, stop
 
 food = vector(0, 0)
 snake = [vector(10, 0)]
 aim = vector(0, -10)
+#AO load sound paths as strings
+pointfx = "point.wav"
+startscreen = "start.wav"
+endscreen = "end.wav"
+newgame = "newgame.wav"
 
 #GS Initialize a wall list to add walls to 
 wall = [vector(40,-60)]
@@ -35,6 +44,9 @@ game_running = False
 def start_page():
     clear()
     write('SNAKE GAME', align='center', font=('Futura', 30, 'bold'))
+    #AO stop end screen song and begin start screen song
+    #stop(endscreen)
+    play(startscreen, async_mode = True)
     up()
     setposition(0,-25)
     down()
@@ -52,6 +64,8 @@ def end_page():
     setposition(0,0)
     down()
     write('GAME OVER', align='center', font=('Futura', 30, 'bold'))
+    #AO play end screen song
+    play(endscreen, async_mode = True)
     up()
     setposition(0,-25)
     down()
@@ -125,6 +139,13 @@ def move():
     snake.append(head)
 
     if head == food:
+<<<<<<< Updated upstream
+=======
+        #AO play point sfx
+        play(pointfx, async_mode = True)
+        #IM score will update by 1 when head eats food
+        score += 1
+>>>>>>> Stashed changes
         #GS check if the shortened powerup was used
         just_shortened = False
         #GS keep the speed multiplier at normal speed when another powerup appears
@@ -281,6 +302,8 @@ def start_game():
     powerup_on = False  # IM Reset powerup state
     speed_product = 1  # IM Reset speed
     just_shortened = False  # IM Reset shortened state
+    #AO end music from start and end screens, play new game sound
+    play(newgame, async_mode = True)
     move()
     
 #IM Function to end the game
