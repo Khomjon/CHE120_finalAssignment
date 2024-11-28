@@ -35,7 +35,7 @@ powerup_type = ''
 #GS initialize a variable to check if the shorten powerup was just used - so the game does not spawn another powerup at length 5
 just_shortened = False
             
-# Game state
+#AP Game state
 game_running = False
 
 #IM Function to display the start page
@@ -211,7 +211,7 @@ def move():
 
     square(food.x, food.y, 9, 'green')
     
-    #Apply a colour to walls
+    #GS Apply a colour to walls
     for i in wall: 
     
         square(i.x, i.y, 9, 'grey')
