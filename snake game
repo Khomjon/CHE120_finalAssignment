@@ -42,8 +42,6 @@ game_running = False
 def start_page():
     clear()
     write('SNAKE GAME', align='center', font=('Futura', 30, 'bold'))
-    #AO stop end screen song and begin start screen song
-    #stop(endscreen)
     up()
     setposition(0,-25)
     down()
@@ -61,7 +59,6 @@ def end_page():
     setposition(0,0)
     down()
     write('GAME OVER', align='center', font=('Futura', 30, 'bold'))
-    #AO play end screen song
     up()
     setposition(0,-25)
     down()
