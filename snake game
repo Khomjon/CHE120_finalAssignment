@@ -135,7 +135,6 @@ def move():
 
         #AO play point sfx
         play(pointfx, async_mode = True)
-        #IM score will update by 1 when head eats food
 
         #GS check if the shortened powerup was used
         just_shortened = False
@@ -241,7 +240,7 @@ def move():
         
     update()
     #GS Change ontimer time value to be a function of speed multiplier
-    ontimer(move, int(100 *speed_product))
+    ontimer(move, int(65 *speed_product))
     
 def controlSnake():
     #AO User input for snake using arrows or 'wasd'
