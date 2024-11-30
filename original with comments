@@ -25,7 +25,7 @@ def change(x, y):
     #AP Changes y value of aim to new y
     aim.y = y
 
-#AP Function checks if head is within game board
+#AP Function checks if head is within game board - #GS It does this to ensure the snake can not travel outside the game board (which would break the game)
 def inside(head):
     """Return True if head inside boundaries."""
     #AP Check if head is within boundaries in x and y directions
@@ -37,13 +37,13 @@ def move():
     head = snake[-1].copy() #AP Set the end of the snake as the location of the Head
     head.move(aim) #AP move the head in the direction the snake is aiming
 
-    #AP Check if head is at the boundaries or collides with the snake
+    #GS Check if head is at the boundaries or collides with the snake 
     if not inside(head) or head in snake:
-        #AP generate a red square at the point of impact
+        #GS generate a red square at the point of impact
         square(head.x, head.y, 9, 'red')
-        #AP Update the graphics on screen
+        #GS Update the graphics on screen
         update()
-        #AP Exits function (No more movement)
+        #GS Exits function (No more movement/ends the game)
         return
 
     #AP update the head position (End of the snake's body)
